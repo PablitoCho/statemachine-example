@@ -17,10 +17,15 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<States, Ev
     @Override
     public void configure(StateMachineStateConfigurer<States, Events> states)
             throws Exception {
-        states
+            states
                 .withStates()
-                .initial(States.LOCKED)
-                .states(EnumSet.allOf(States.class));
+                .initial(States.S0)
+                .state(States.S5)
+                .state(States.S10)
+                .state(States.S15)
+                .state(States.S20)
+                .state(States.S25);
+//                .states(EnumSet.allOf(States.class));
     }
 
     @Override
@@ -28,14 +33,14 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<States, Ev
             throws Exception {
         transitions
                 .withExternal()
-                .source(States.LOCKED)
-                .target(States.UNLOCKED)
-                .event(Events.COIN)
+                    .source(States.S0)
+                    .target(States.S10)
+                    .event(Events.InsertNickel)
                 .and()
                 .withExternal()
-                .source(States.UNLOCKED)
-                .target(States.LOCKED)
-                .event(Events.PUSH);
+                    .source(States.S10)
+                    .target(States.S15)
+                    .event(Events.InsertNickel);
     }
 
 

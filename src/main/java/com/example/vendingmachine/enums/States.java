@@ -1,5 +1,5 @@
 package com.example.vendingmachine.enums;
 
 public enum States {
-    LOCKED, UNLOCKED
+    S0, S5, S10, S15, S20, S25, S30
 }

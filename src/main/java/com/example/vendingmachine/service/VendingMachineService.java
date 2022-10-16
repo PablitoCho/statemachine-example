@@ -24,6 +24,6 @@ public class VendingMachineService {
     private void init() {
         stateMachine = factory.getStateMachine();
         stateMachine.start();
-        log.info("vending machine started");
+        log.info("vending machine created");
     }
 }
