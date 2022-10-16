@@ -23,4 +23,9 @@ public class VendingMachineController {
     public ResponseModel insertDime() {
         return service.insertDime();
     }
+
+    @GetMapping("/insert/quarter")
+    public ResponseModel insertQuarter() {
+        return service.insertQuarter();
+    }
 }
