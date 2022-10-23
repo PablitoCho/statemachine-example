@@ -1,28 +1,50 @@
 package com.example.vendingmachine.config;
 
+import com.example.vendingmachine.config.action.InsertAction;
+import com.example.vendingmachine.config.action.PushAction;
+import com.example.vendingmachine.config.guard.InsertGuard;
+import com.example.vendingmachine.config.guard.PushGuard;
 import com.example.vendingmachine.enums.Events;
 import com.example.vendingmachine.enums.States;
 import com.example.vendingmachine.service.VendingMachineService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.statemachine.StateContext;
-import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.config.EnableStateMachine;
 import org.springframework.statemachine.config.StateMachineConfigurerAdapter;
 import org.springframework.statemachine.config.builders.StateMachineConfigurationConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
-import org.springframework.statemachine.guard.Guard;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 import org.springframework.statemachine.state.State;
-import org.springframework.statemachine.transition.Transition;
+
+import java.util.EnumSet;
 
 
 @Slf4j
 @Configuration
 @EnableStateMachine
 public class StateMachineConfig extends StateMachineConfigurerAdapter<States, Events> {
+
+    @Bean
+    InsertAction insertAction() {
+        return new InsertAction();
+    }
+
+    @Bean
+    InsertGuard insertGuard() {
+        return new InsertGuard();
+    }
+
+    @Bean
+    PushAction pushAction() {
+        return new PushAction();
+    }
+
+    @Bean
+    PushGuard pushGuard() {
+        return new PushGuard();
+    }
 
     @Override
     public void configure(StateMachineStateConfigurer<States, Events> states)
@@ -125,7 +147,15 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<States, Ev
                 .guard(insertGuard()).action(insertAction())
             .and()
                 .withInternal()
-                .source(States.S30).event(Events.InsertQuarter);
+                .source(States.S30).event(Events.InsertQuarter)
+            .and()
+                .withExternal()
+                .source(States.S30).target(States.S0).event(Events.PushAppleJuice)
+                .guard(pushGuard()).action(pushAction())
+            .and()
+                .withExternal()
+                .source(States.S30).target(States.S0).event(Events.PushOrangeJuice)
+                .guard(pushGuard()).action(pushAction());
     }
 
     @Override
@@ -142,47 +172,12 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<States, Ev
         config.withConfiguration().listener(adapter);
     }
 
-    @Bean
-    InsertAction insertAction() {
-        return new InsertAction();
-    }
 
-    @Bean
-    InsertGuard insertGuard() {
-        return new InsertGuard();
-    }
 
-    class InsertAction implements Action<States, Events>  {
-        @Override
-        public void execute(StateContext<States, Events> stateContext) {
-            int currentCents = VendingMachineService.getInsertedCents();
-            switch(stateContext.getEvent()) {
-                case InsertNickel:
-                    VendingMachineService.setInsertedCents(currentCents + 5);
-                    break;
-                case InsertDime:
-                    VendingMachineService.setInsertedCents(currentCents + 10);
-                    break;
-                case InsertQuarter:
-                    VendingMachineService.setInsertedCents(currentCents + 25);
-                    break;
-            }
-        }
-    }
 
-    class InsertGuard implements Guard<States, Events> {
-        @Override
-        public boolean evaluate(StateContext<States, Events> stateContext) {
-            int currentCents = VendingMachineService.getInsertedCents();
-            switch(stateContext.getEvent()) {
-                case InsertNickel:
-                    return currentCents + 5 <= 30;
-                case InsertDime:
-                    return currentCents + 10 <= 30;
-                case InsertQuarter:
-                    return currentCents + 25 <= 30;
-            }
-            return false;
-        }
-    }
+
+
+
+
+
 }

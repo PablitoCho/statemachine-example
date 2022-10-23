@@ -28,4 +28,14 @@ public class VendingMachineController {
     public ResponseModel insertQuarter() {
         return service.insertQuarter();
     }
+
+    @GetMapping("/push/orange")
+    public ResponseModel pushOrangeJuice() {
+        return service.pushOrangeJuice();
+    }
+
+    @GetMapping("/push/apple")
+    public ResponseModel pushAppleJuice() {
+        return service.pushAppleJuice();
+    }
 }

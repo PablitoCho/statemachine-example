@@ -23,6 +23,9 @@ public class VendingMachineService {
     @Getter @Setter
     public static int insertedCents = 0;
 
+    @Getter @Setter
+    public static String beverage;
+
     @PostConstruct
     private void init() {
         stateMachine.start();
@@ -44,4 +47,13 @@ public class VendingMachineService {
         return new ResponseModel(insertedCents, null, stateMachine.getState().getId().toString());
     }
 
+    public ResponseModel pushOrangeJuice() {
+        stateMachine.sendEvent(Events.PushOrangeJuice);
+        return new ResponseModel(insertedCents, beverage, stateMachine.getState().getId().toString());
+    }
+
+    public ResponseModel pushAppleJuice() {
+        stateMachine.sendEvent(Events.PushAppleJuice);
+        return new ResponseModel(insertedCents, beverage, stateMachine.getState().getId().toString());
+    }
 }
