@@ -10,8 +10,11 @@ public class PushGuard implements Guard<States, Events> {
     @Override
     public boolean evaluate(StateContext<States, Events> stateContext) {
         int currentCents = VendingMachineService.getInsertedCents();
-        if(currentCents < 30)
+        if(currentCents < 30){
+            System.out.println("Not enough money");
+            VendingMachineService.setBeverage(null);
             return false;
+        }
         return true;
     }
 }

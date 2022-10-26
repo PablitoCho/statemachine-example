@@ -18,8 +18,6 @@ import org.springframework.statemachine.config.builders.StateMachineTransitionCo
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 import org.springframework.statemachine.state.State;
 
-import java.util.EnumSet;
-
 
 @Slf4j
 @Configuration
@@ -150,7 +148,55 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<States, Ev
                 .source(States.S30).event(Events.InsertQuarter)
             .and()
                 .withExternal()
+                .source(States.S0).target(States.S0).event(Events.PushAppleJuice)
+                .guard(pushGuard()).action(pushAction())
+            .and()
+                .withExternal()
+                .source(States.S5).target(States.S5).event(Events.PushAppleJuice)
+                .guard(pushGuard()).action(pushAction())
+            .and()
+                .withExternal()
+                .source(States.S10).target(States.S10).event(Events.PushAppleJuice)
+                .guard(pushGuard()).action(pushAction())
+            .and()
+                .withExternal()
+                .source(States.S15).target(States.S15).event(Events.PushAppleJuice)
+                .guard(pushGuard()).action(pushAction())
+            .and()
+                .withExternal()
+                .source(States.S20).target(States.S20).event(Events.PushAppleJuice)
+                .guard(pushGuard()).action(pushAction())
+            .and()
+                .withExternal()
+                .source(States.S25).target(States.S25).event(Events.PushAppleJuice)
+                .guard(pushGuard()).action(pushAction())
+            .and()
+                .withExternal()
                 .source(States.S30).target(States.S0).event(Events.PushAppleJuice)
+                .guard(pushGuard()).action(pushAction())
+            .and()
+                .withExternal()
+                .source(States.S0).target(States.S0).event(Events.PushOrangeJuice)
+                .guard(pushGuard()).action(pushAction())
+            .and()
+                .withExternal()
+                .source(States.S5).target(States.S5).event(Events.PushOrangeJuice)
+                .guard(pushGuard()).action(pushAction())
+            .and()
+                .withExternal()
+                .source(States.S10).target(States.S10).event(Events.PushOrangeJuice)
+                .guard(pushGuard()).action(pushAction())
+            .and()
+                .withExternal()
+                .source(States.S15).target(States.S15).event(Events.PushOrangeJuice)
+                .guard(pushGuard()).action(pushAction())
+            .and()
+                .withExternal()
+                .source(States.S20).target(States.S20).event(Events.PushOrangeJuice)
+                .guard(pushGuard()).action(pushAction())
+            .and()
+                .withExternal()
+                .source(States.S25).target(States.S25).event(Events.PushOrangeJuice)
                 .guard(pushGuard()).action(pushAction())
             .and()
                 .withExternal()
@@ -171,13 +217,5 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<States, Ev
         };
         config.withConfiguration().listener(adapter);
     }
-
-
-
-
-
-
-
-
 
 }
